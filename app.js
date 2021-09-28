@@ -4,6 +4,7 @@
 let allImages = [];
 let totalclicks = 0;
 
+
 function Catalog(url, name) {
     this.name = name;
     this.url = `assets/images/${url}`;
@@ -16,10 +17,105 @@ let productImagesEl = document.getElementById("all-images");
 let leftImageEl = document.getElementById("left-image");
 let centerImageEl = document.getElementById("center-image");
 let rightImageEl = document.getElementById("right-image");
+let divResults = document.getElementById("results");
+
+let buttonEl = document.getElementById('result-button');
 
 // render function
 function renderCatalog() {
     let leftImageIndex = Math.floor(Math.random() * allImages.length);
     let centerImageIndex = Math.floor(Math.random() * allImages.length);
     let rightImageIndex = Math.floor(Math.random() * allImages.length);
+
+    while (leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex === rightImageIndex) {
+        centerImageIndex = Math.floor(Math.random() * allImages.length);
+        rightImageIndex = Math.floor(Math.random() * allImages.length);
+
+    }
+    totalclicks++;
+    console.log('Totals clicks ' + totalclicks);
+
+    let left = allImages[leftImageIndex];
+    let center = allImages[centerImageIndex];
+    let right = allImages[rightImageIndex];
+
+    leftImageEl.src = left.url;
+    leftImageEl.name = left.name;
+    left.timeShown++;
+
+    centerImageEl.src = center.url;
+    centerImageEl.name = center.name;
+    center.timeShown++;
+
+    rightImageEl.src = right.url;
+    rightImageEl.name = right.name;
+    right.timeShown++;
+
+    console.log(left);
 }
+
+//console.log(allImages);
+
+function handleClick(event) {
+
+    event.preventDefault();
+
+    let catalogElement = event.target.name;
+    console.log(event.target.name);
+    console.log(allImages);
+
+    for (let i = 0; i < allImages.length; i++) {
+        if (catalogElement === allImages[i].name) {
+            allImages[i].clicks++;
+            console.log(allImages[i]);
+
+        }
+    }
+    if (totalclicks <= 25) {
+        renderCatalog();
+    }
+}
+
+function renderResults() {
+
+    let ulList = document.createElement('ul');
+    for (let i = 0; i < allImages.length; i++) {
+        let liList = document.createElement('li');
+        liList.textContent = `${allImages[i].name}: ${allImages[i].clicks} votes`;
+        ulList.appendChild(liList);
+    }
+    divResults.appendChild(ulList);
+
+}
+
+leftImageEl.addEventListener('click', handleClick);
+centerImageEl.addEventListener('click', handleClick);
+rightImageEl.addEventListener('click', handleClick);
+
+// display results on button click
+buttonEl.addEventListener('click', renderResults);
+
+
+new Catalog('dog-duck.jpg', 'dog-duck');
+new Catalog('pen.jpg', 'pen');
+new Catalog('shark.jpg', 'shark');
+new Catalog('sweep.png', 'sweep');
+new Catalog('water-can.jpg', 'water-can');
+new Catalog('bag.jpg', 'bag');
+new Catalog('banana.jpg', 'banana');
+new Catalog('bathroom.jpg', 'bathroom');
+new Catalog('boots.jpg', 'boots');
+new Catalog('chair.jpg', 'chair');
+new Catalog('cthulhu.jpg', 'cthulhu');
+new Catalog('breakfast.jpg', 'breakfast');
+new Catalog('bubblegum.jpg', 'bubblegum');
+new Catalog('dragon.jpg', 'dragon');
+new Catalog('pet-sweep.jpg', 'pet-sweep');
+new Catalog('scissors.jpg', 'scissors');
+new Catalog('tauntaun.jpg', 'tauntaun');
+new Catalog('unicorn.jpg', 'unicorn');
+new Catalog('water-can.jpg', 'water-can');
+
+
+
+renderCatalog();
