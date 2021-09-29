@@ -21,19 +21,22 @@ let divResults = document.getElementById("results");
 
 let buttonEl = document.getElementById('result-button');
 
-// render function
-function renderCatalog() {
+// choose 3 images from catalog
+function selectImages() {
     let leftImageIndex = Math.floor(Math.random() * allImages.length);
     let centerImageIndex = Math.floor(Math.random() * allImages.length);
     let rightImageIndex = Math.floor(Math.random() * allImages.length);
 
-    while (leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex === rightImageIndex) {
+    while (leftImageIndex === centerImageIndex) {
         centerImageIndex = Math.floor(Math.random() * allImages.length);
-        rightImageIndex = Math.floor(Math.random() * allImages.length);
-
     }
+    while (rightImageIndex === centerImageIndex || rightImageIndex === leftImageIndex) {
+        rightImageIndex = Math.floor(Math.random() * allImages.length);
+    }
+
+    console.log(leftImageIndex, centerImageIndex, rightImageIndex);
     totalclicks++;
-    console.log('Totals clicks ' + totalclicks);
+    //console.log('Totals clicks ' + totalclicks);
 
     let left = allImages[leftImageIndex];
     let center = allImages[centerImageIndex];
@@ -51,10 +54,59 @@ function renderCatalog() {
     rightImageEl.name = right.name;
     right.timeShown++;
 
-    console.log(left);
+    //console.log(left);
 }
 
-//console.log(allImages);
+// render data to chart
+function renderChart() {
+    let chartEl = document.getElementById("my-chart");
+    chartEl.innerHTML = '';
+
+    // canvas element
+    let ctx = chartEl.getContext("2d");
+    let votesReceived = [];
+    let timesViewed = [];
+    let labels = [];
+
+    for (let i = 0; i < allImages.length; i++) {
+        votesReceived.push(allImages[i].clicks);
+        timesViewed.push(allImages[i].timeShown);
+        labels.push(allImages[i].name);
+
+    }
+    // console.log("votes received " + votesReceived);
+    // console.log("times viewed " + timesViewed);
+
+    // create chart and add data to it
+    let catalogChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Votes Received",
+                data: votesReceived,
+                backgroundColor: [
+                    'rgba(83, 51, 237, 1)'
+                ],
+            }, {
+                label: "Times Shown",
+                data: timesViewed,
+                backgroundColor: [
+                    'rgba(207, 0, 15, 1)'
+                ],
+            }],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+}
+
 
 function handleClick(event) {
 
@@ -71,8 +123,13 @@ function handleClick(event) {
 
         }
     }
-    if (totalclicks <= 25) {
-        renderCatalog();
+    selectImages();
+    if (totalclicks >= 25) {
+        leftImageEl.removeEventListener('click', handleClick);
+        centerImageEl.removeEventListener('click', handleClick);
+        rightImageEl.removeEventListener('click', handleClick);
+
+
     }
 }
 
@@ -81,11 +138,11 @@ function renderResults() {
     let ulList = document.createElement('ul');
     for (let i = 0; i < allImages.length; i++) {
         let liList = document.createElement('li');
-        liList.textContent = `${allImages[i].name}: ${allImages[i].clicks} votes`;
-        ulList.appendChild(liList);
+        //liList.textContent = `${allImages[i].name}: ${allImages[i].clicks} votes`;
+        // ulList.appendChild(liList);
     }
-    divResults.appendChild(ulList);
-
+    //divResults.appendChild(ulList);
+    renderChart();
 }
 
 leftImageEl.addEventListener('click', handleClick);
@@ -114,8 +171,9 @@ new Catalog('pet-sweep.jpg', 'pet-sweep');
 new Catalog('scissors.jpg', 'scissors');
 new Catalog('tauntaun.jpg', 'tauntaun');
 new Catalog('unicorn.jpg', 'unicorn');
-new Catalog('water-can.jpg', 'water-can');
 
 
 
-renderCatalog();
+selectImages();
+
+
