@@ -21,8 +21,8 @@ let divResults = document.getElementById("results");
 
 let buttonEl = document.getElementById('result-button');
 
-// render function
-function renderCatalog() {
+// choose 3 images from catalog
+function selectImages() {
     let leftImageIndex = Math.floor(Math.random() * allImages.length);
     let centerImageIndex = Math.floor(Math.random() * allImages.length);
     let rightImageIndex = Math.floor(Math.random() * allImages.length);
@@ -54,7 +54,58 @@ function renderCatalog() {
     console.log(left);
 }
 
-//console.log(allImages);
+// render data to chart
+function renderChart() {
+    let chartEl = document.getElementById("my-chart");
+    chartEl.innerHTML = '';
+
+    // canvas element
+    let ctx = chartEl.getContext("2d");
+    let votesReceived = [];
+    let timesViewed = [];
+    let labels = [];
+
+    for (let i = 0; i < allImages.length; i++) {
+        votesReceived.push(allImages[i].clicks);
+        timesViewed.push(allImages[i].timeShown);
+        labels.push(allImages[i].name);
+
+    }
+    console.log("votes received " + votesReceived);
+    console.log("times viewed " + timesViewed);
+    // create chart and add data to it
+    let catalogChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Votes Received",
+                data: votesReceived,
+                backgroundColor: [
+                    'rgba(83, 51, 237, 1)'
+                ],
+            }, {
+                label: "Times Shown",
+                data: timesViewed,
+                backgroundColor: [
+                    'rgba(207, 0, 15, 1)'
+                ],
+            }],
+
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+
+
+    });
+
+}
+
 
 function handleClick(event) {
 
@@ -71,8 +122,13 @@ function handleClick(event) {
 
         }
     }
-    if (totalclicks <= 25) {
-        renderCatalog();
+    selectImages();
+    if (totalclicks >= 25) {
+        leftImageEl.removeEventListener('click', handleClick);
+        centerImageEl.removeEventListener('click', handleClick);
+        rightImageEl.removeEventListener('click', handleClick);
+
+
     }
 }
 
@@ -81,11 +137,11 @@ function renderResults() {
     let ulList = document.createElement('ul');
     for (let i = 0; i < allImages.length; i++) {
         let liList = document.createElement('li');
-        liList.textContent = `${allImages[i].name}: ${allImages[i].clicks} votes`;
-        ulList.appendChild(liList);
+        //liList.textContent = `${allImages[i].name}: ${allImages[i].clicks} votes`;
+        // ulList.appendChild(liList);
     }
-    divResults.appendChild(ulList);
-
+    //divResults.appendChild(ulList);
+    renderChart();
 }
 
 leftImageEl.addEventListener('click', handleClick);
@@ -117,5 +173,6 @@ new Catalog('unicorn.jpg', 'unicorn');
 new Catalog('water-can.jpg', 'water-can');
 
 
+selectImages();
 
-renderCatalog();
+
