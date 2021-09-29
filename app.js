@@ -3,7 +3,7 @@
 
 let allImages = [];
 let totalclicks = 0;
-
+let currentImages = [];
 
 function Catalog(url, name) {
     this.name = name;
@@ -23,18 +23,18 @@ let buttonEl = document.getElementById('result-button');
 
 // choose 3 images from catalog
 function selectImages() {
-    let leftImageIndex = Math.floor(Math.random() * allImages.length);
-    let centerImageIndex = Math.floor(Math.random() * allImages.length);
-    let rightImageIndex = Math.floor(Math.random() * allImages.length);
-
-    while (leftImageIndex === centerImageIndex) {
-        centerImageIndex = Math.floor(Math.random() * allImages.length);
+    // add 6 unique images in currentImages
+    while (currentImages.length < 6) {
+        let randomNum = Math.floor(Math.random() * allImages.length);
+        while (!currentImages.includes(randomNum)) {
+            currentImages.push(randomNum)
+        }
     }
-    while (rightImageIndex === centerImageIndex || rightImageIndex === leftImageIndex) {
-        rightImageIndex = Math.floor(Math.random() * allImages.length);
-    }
+    let leftImageIndex = currentImages.shift();
+    let centerImageIndex = currentImages.shift();
+    let rightImageIndex = currentImages.shift();
 
-    console.log(leftImageIndex, centerImageIndex, rightImageIndex);
+    
     totalclicks++;
     //console.log('Totals clicks ' + totalclicks);
 
@@ -54,7 +54,6 @@ function selectImages() {
     rightImageEl.name = right.name;
     right.timeShown++;
 
-    //console.log(left);
 }
 
 // render data to chart
@@ -74,8 +73,6 @@ function renderChart() {
         labels.push(allImages[i].name);
 
     }
-    // console.log("votes received " + votesReceived);
-    // console.log("times viewed " + timesViewed);
 
     // create chart and add data to it
     let catalogChart = new Chart(ctx, {
@@ -111,7 +108,8 @@ function renderChart() {
 function handleClick(event) {
 
     event.preventDefault();
-
+    // array to store current images
+   
     let catalogElement = event.target.name;
     console.log(event.target.name);
     console.log(allImages);
@@ -119,7 +117,7 @@ function handleClick(event) {
     for (let i = 0; i < allImages.length; i++) {
         if (catalogElement === allImages[i].name) {
             allImages[i].clicks++;
-            console.log(allImages[i]);
+            //console.log(allImages[i]);
 
         }
     }
