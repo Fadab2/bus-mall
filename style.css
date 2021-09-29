@@ -1,23 +1,32 @@
+
 body {
+
+    background-color: greenyellow;
+}
+main {
     margin: 0px auto;
     width: 960px;
 }
 
 h3 {
     height: 50px;
+   text-align: center;
+   padding-top: 20px;
+   border-radius:10px;
+    background-color: aqua;
     border: 2px solid blue;
 }
 #grid {
     display: grid;
-    border: 2px solid blue;
-    grid-template-rows: 25% 25% 25% 25%
+    position: relative;
+    grid-template-rows: 33% 33% 33%;
     grid-template-rows: 100%;
 }
 
 
 #left-image, #center-image, #right-image {
-    width: 300px;
-    height: 300px;
+    width: 310px;
+    height: 310px;
     border: 2px solid goldenrod;
     
 }
@@ -27,10 +36,12 @@ h3 {
 
 #footer-content {
     width: 100%;
-    border: 2px solid green;
-    height: 60px;
-    padding-top: 1;
+    background-color: aqua;
+    border: 2px solid blue;
+    height: 50px;
+    padding-top: 20px;
     text-align: center; 
+    border-radius:10px;
     font-size: 28px;
 }
 

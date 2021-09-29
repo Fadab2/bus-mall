@@ -27,13 +27,16 @@ function selectImages() {
     let centerImageIndex = Math.floor(Math.random() * allImages.length);
     let rightImageIndex = Math.floor(Math.random() * allImages.length);
 
-    while (leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex === rightImageIndex) {
+    while (leftImageIndex === centerImageIndex) {
         centerImageIndex = Math.floor(Math.random() * allImages.length);
-        rightImageIndex = Math.floor(Math.random() * allImages.length);
-
     }
+    while (rightImageIndex === centerImageIndex || rightImageIndex === leftImageIndex) {
+        rightImageIndex = Math.floor(Math.random() * allImages.length);
+    }
+
+    console.log(leftImageIndex, centerImageIndex, rightImageIndex);
     totalclicks++;
-    console.log('Totals clicks ' + totalclicks);
+    //console.log('Totals clicks ' + totalclicks);
 
     let left = allImages[leftImageIndex];
     let center = allImages[centerImageIndex];
@@ -51,7 +54,7 @@ function selectImages() {
     rightImageEl.name = right.name;
     right.timeShown++;
 
-    console.log(left);
+    //console.log(left);
 }
 
 // render data to chart
@@ -71,8 +74,9 @@ function renderChart() {
         labels.push(allImages[i].name);
 
     }
-    console.log("votes received " + votesReceived);
-    console.log("times viewed " + timesViewed);
+    // console.log("votes received " + votesReceived);
+    // console.log("times viewed " + timesViewed);
+
     // create chart and add data to it
     let catalogChart = new Chart(ctx, {
         type: 'bar',
@@ -91,7 +95,6 @@ function renderChart() {
                     'rgba(207, 0, 15, 1)'
                 ],
             }],
-
         },
         options: {
             scales: {
@@ -100,8 +103,6 @@ function renderChart() {
                 }
             }
         }
-
-
     });
 
 }
@@ -170,7 +171,7 @@ new Catalog('pet-sweep.jpg', 'pet-sweep');
 new Catalog('scissors.jpg', 'scissors');
 new Catalog('tauntaun.jpg', 'tauntaun');
 new Catalog('unicorn.jpg', 'unicorn');
-new Catalog('water-can.jpg', 'water-can');
+
 
 
 selectImages();
