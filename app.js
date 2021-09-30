@@ -1,6 +1,6 @@
 
 
-
+let retrieveProducts = localStorage.getItem('products');
 let allImages = [];
 let totalclicks = 0;
 let currentImages = [];
@@ -34,7 +34,7 @@ function selectImages() {
     let centerImageIndex = currentImages.shift();
     let rightImageIndex = currentImages.shift();
 
-    
+
     totalclicks++;
     //console.log('Totals clicks ' + totalclicks);
 
@@ -109,10 +109,10 @@ function handleClick(event) {
 
     event.preventDefault();
     // array to store current images
-   
+
     let catalogElement = event.target.name;
-    console.log(event.target.name);
-    console.log(allImages);
+    //console.log(event.target.name);
+    //console.log(allImages);
 
     for (let i = 0; i < allImages.length; i++) {
         if (catalogElement === allImages[i].name) {
@@ -141,6 +141,8 @@ function renderResults() {
     }
     //divResults.appendChild(ulList);
     renderChart();
+    localStorage.setItem('products', JSON.stringify(allImages));
+
 }
 
 leftImageEl.addEventListener('click', handleClick);
@@ -150,25 +152,32 @@ rightImageEl.addEventListener('click', handleClick);
 // display results on button click
 buttonEl.addEventListener('click', renderResults);
 
+if (retrieveProducts) {
+    let parseData = JSON.parse(retrieveProducts);
+    allImages = parseData;
+}
+else {
 
-new Catalog('dog-duck.jpg', 'dog-duck');
-new Catalog('pen.jpg', 'pen');
-new Catalog('shark.jpg', 'shark');
-new Catalog('sweep.png', 'sweep');
-new Catalog('water-can.jpg', 'water-can');
-new Catalog('bag.jpg', 'bag');
-new Catalog('banana.jpg', 'banana');
-new Catalog('bathroom.jpg', 'bathroom');
-new Catalog('boots.jpg', 'boots');
-new Catalog('chair.jpg', 'chair');
-new Catalog('cthulhu.jpg', 'cthulhu');
-new Catalog('breakfast.jpg', 'breakfast');
-new Catalog('bubblegum.jpg', 'bubblegum');
-new Catalog('dragon.jpg', 'dragon');
-new Catalog('pet-sweep.jpg', 'pet-sweep');
-new Catalog('scissors.jpg', 'scissors');
-new Catalog('tauntaun.jpg', 'tauntaun');
-new Catalog('unicorn.jpg', 'unicorn');
+    new Catalog('dog-duck.jpg', 'dog-duck');
+    new Catalog('pen.jpg', 'pen');
+    new Catalog('shark.jpg', 'shark');
+    new Catalog('sweep.png', 'sweep');
+    new Catalog('water-can.jpg', 'water-can');
+    new Catalog('bag.jpg', 'bag');
+    new Catalog('banana.jpg', 'banana');
+    new Catalog('bathroom.jpg', 'bathroom');
+    new Catalog('boots.jpg', 'boots');
+    new Catalog('chair.jpg', 'chair');
+    new Catalog('cthulhu.jpg', 'cthulhu');
+    new Catalog('breakfast.jpg', 'breakfast');
+    new Catalog('bubblegum.jpg', 'bubblegum');
+    new Catalog('dragon.jpg', 'dragon');
+    new Catalog('pet-sweep.jpg', 'pet-sweep');
+    new Catalog('scissors.jpg', 'scissors');
+    new Catalog('tauntaun.jpg', 'tauntaun');
+    new Catalog('unicorn.jpg', 'unicorn');
+
+}
 
 
 
